@@ -1,3 +1,4 @@
+from unittest.case import DIFF_OMITTED
 import pandas as pd
 # import plotly.express as px
 # import streamlit as st
@@ -47,11 +48,15 @@ df_compra['Anio'] = df_compra['Fecha'].dt.year
 df_compra['Mes'] = df_compra['Fecha'].dt.month
 df_compra['Compras'] = df_compra['Cantidad'] * df_compra['Precio']
 df_compras = pd.merge(df_compra, df_producto, on='IdProducto', how='left')
-compras = pd.merge(df_compras, df_tipoProducto, on='IdTipoProducto', how='left')
-compras_por_producto = compras.groupby(['TipoProducto', 'Anio'], as_index=False).agg({'Compras':'sum'})
+compras_idprodcuto = pd.merge(df_compras, df_tipoProducto, on='IdTipoProducto', how='left')
+compras_por_producto = compras_idprodcuto.groupby(['TipoProducto', 'Anio'], as_index=False).agg({'Compras':'sum'})
 
-print(compras_por_producto)
+df_ventas = pd.merge(ventas, df_producto, on='IdProducto', how='left')
 
+ventas_idproducto = pd.merge(df_ventas, df_tipoProducto, on='IdTipoProducto', how='left')
+ventas_por_producto = ventas_idproducto.groupby(['TipoProducto', 'Anio'], as_index=False).agg({'Ventas': 'sum'})
+
+print(ventas_por_producto)
 
 
 
